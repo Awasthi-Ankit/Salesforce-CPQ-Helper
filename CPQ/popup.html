@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header_footer header_only">
+        <img src="./img/CPQ Helper.svg" alt="Your Logo" width="60" height="30" class="logo">
+        <p>Salesforce CPQ Helper</p>
+    </header>
+    <main class="main_container">
+        <!-- Find a field in CPQ Partials -->
+        <div class="major_actions simple_flex">
+            <div class="simple_flex_col">
+                <!-- Enter field api name to search -->
+                 <div>
+                     <input type="text" name="find_a_field_input" placeholder="field api" id="find_a_field_input_id" class="major_action_input">
+                     <button name = "find_in_CPQ_action_use" id="find_in_CPQ_action_use" class="major_button">Find Actions</button>
+                 </div>
+                <div class="simple_flex">
+                    <!-- To inclued InActive Price rules and actions -->
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="include_inactive">
+                        <label for="include_inactive">Include InAactive</label>
+                    </div>
+                </div>
+            </div>
+            <!-- Action button to hit a search -->
+        </div>
+        <!-- collected data and errors -->
+         <div id="display_data_root">
+             <div class="collected_data_table_root hidden" id="collected_data_table_root">
+                 <div>
+                     <h1>This field is getting updaetd from following price actions:</h1>
+                 </div>
+                 <div class="price_action_table_container">
+                     <table id="price_action_table">
+                         <tr>
+                           <th>Price Rule</th>
+                           <th>Price Action</th>
+                           <th>isActive</th>
+                         </tr>
+                       </table>
+                 </div>
+             </div>
+             <div class="collected_data_error_root hidden" id="collected_data_error_root">
+             </div>
+         </div>
+        <!-- collected data and errors end-->
+    </main>
+    <footer class="header_footer footer_only simple_flex">  
+        <p>GitHub</p>
+        <p>dev by anawasthi123@gmail.com</p>
+    </footer>
+    <script src="prepareUI.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html>
