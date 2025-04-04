@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
     <header class="header_footer header_only">
@@ -17,14 +17,18 @@
             <div class="simple_flex_col">
                 <!-- Enter field api name to search -->
                  <div>
-                     <input type="text" name="find_a_field_input" placeholder="field api" id="find_a_field_input_id" class="major_action_input">
-                     <button name = "find_in_CPQ_action_use" id="find_in_CPQ_action_use" class="major_button">Find Actions</button>
+                     <input type="text" name="find_a_field_input" placeholder="field api" id="find_a_field_input_id" class="major_action_input" aria-label="Enter field API name">
+                     <button name = "find_in_CPQ_action_use" id="find_in_CPQ_action_use" class="major_button" aria-label="Find Actions">Find Actions</button>
                  </div>
                 <div class="simple_flex">
                     <!-- To inclued InActive Price rules and actions -->
                     <div class="checkbox-container">
                         <input type="checkbox" id="include_inactive">
-                        <label for="include_inactive">Include InAactive</label>
+                        <label for="include_inactive">Include Inactive</label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="search_in_qcp" checked="true">
+                        <label for="search_in_qcp">Check In QCP/Custom Script</label>
                     </div>
                 </div>
             </div>
@@ -37,23 +41,35 @@
                      <h1>This field is getting updaetd from following price actions:</h1>
                  </div>
                  <div class="price_action_table_container">
-                     <table id="price_action_table">
-                         <tr>
-                           <th>Price Rule</th>
-                           <th>Price Action</th>
-                           <th>isActive</th>
-                         </tr>
+                     <table id="price_action_table" role="table">
+                         <thead>
+                             <tr>
+                               <th>Price Rule</th>
+                               <th>Price Action</th>
+                               <th>isActive</th>
+                             </tr>
+                         </thead>
+                         <tbody id="price_action_table_body">
+                             <!-- Table rows will be dynamically added here -->
+                         </tbody>
                        </table>
                  </div>
              </div>
              <div class="collected_data_error_root hidden" id="collected_data_error_root">
              </div>
          </div>
+         <div class="hidden margin_m_top" id="qcp_data_found">
+            <h1>This field is being referenced in following QCP Files</h1>
+            <p id="qcp_list" class="margin_m_top"></p>
+         </div>
+         <div class="hidden margin_m_top" id="qcp_data_notfound">
+            <h1>This field is not used in any QCP File(s)</h1>
+         </div>
         <!-- collected data and errors end-->
     </main>
     <footer class="header_footer footer_only simple_flex">  
         <p>GitHub</p>
-        <p>dev by anawasthi123@gmail.com</p>
+        <p></p>
     </footer>
     <script src="prepareUI.js"></script>
     <script src="popup.js"></script>

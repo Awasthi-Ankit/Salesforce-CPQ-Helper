@@ -4,7 +4,6 @@ let data = {};
 let fieldAPI = '';
 let objectAPI = '';
 const findInCPQActionUse = document.getElementById('find_in_CPQ_action_use');
-const findInCPQRuleUse = document.getElementById('find_in_CPQ_rule_use');
 const storeInitialDisplayDataRootHTML = document.getElementById("display_data_root").innerHTML; // store inner html to go back to initial state when needed to reset the UI.
 
 /**
@@ -27,36 +26,21 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 /**
  * @description Listen to the user button click for finding price actions
  */
-if (findInCPQActionUse) {
-    findInCPQActionUse.addEventListener('click', function () {
-        clearUI(storeInitialDisplayDataRootHTML);
-        fieldAPI = document.getElementById("find_a_field_input_id").value.trim();
-        includeInActive = document.getElementById("include_inactive").checked;
-        console.log(includeInActive);
-        if(fieldAPI){
-            findInCPQActions(includeInActive);
-        }else{
-            console.error('Please add a field API to search with');
-        }
-    });
-} else {
-    console.error("Element with ID 'find_in_CPQ_use' not found.");
-}
-if (findInCPQRuleUse) {
-    findInCPQRuleUse.addEventListener('click', function () {
-        clearUI(storeInitialDisplayDataRootHTML);
-        objectAPI = document.getElementById("find_a_field_input_id").value.trim();
-        includeInActive = document.getElementById("include_inactive").checked;
-        console.log(includeInActive);
-        if(objectAPI){
-            findInCPQActions(includeInActive);
-        }else{
-            console.error('Please add a field API to search with');
-        }
-    });
-} else {
-    console.error("Element with ID 'find_in_CPQ_use' not found.");
-}
+findInCPQActionUse.addEventListener('click', function () {
+    clearUI(storeInitialDisplayDataRootHTML);
+    fieldAPI = document.getElementById("find_a_field_input_id").value.trim();
+    includeInActive = document.getElementById("include_inactive").checked;
+    searchInQCP = document.getElementById('search_in_qcp').checked;
+    if(fieldAPI){
+        findInCPQActions(includeInActive);
+    }else{
+        console.error('Please add a field API to search with');
+    }
+    if(searchInQCP){
+        searchInQCPFile();
+    }
+});
+
 /**
  * @description Asynchronus function that fetch possible price actions from connected Saesforce
  * @async Waits for the data response from the SOQL Query sent to Salesforce
@@ -66,9 +50,7 @@ async function findInCPQActions(includeInActive) {
     if(!includeInActive){
         query += " AND SBQQ__Rule__r.SBQQ__Active__c = true"
     }
-    console.log(query);
     const apiUrl = `${instanceUrl}/services/data/v60.0/query/?q=${query}`;
-
     try {
         const response = await fetch(apiUrl, {
             method: "GET",
@@ -77,12 +59,10 @@ async function findInCPQActions(includeInActive) {
                 "Content-Type": "application/json"
             }
         });
-
         if (!response.ok) {
             dataNotFoundOrWrongFieldAPI(response.text());
             throw new Error(await response.text());
         }
-        
         data = await response.json();
         if (data.records.length > 0) {
             console.log("Price Action Name:", data.records[0].Name);
@@ -94,4 +74,30 @@ async function findInCPQActions(includeInActive) {
     } catch (error) {
         console.error("Error fetching price actions:", error);
     }
+}
+
+async function searchInQCPFile(){
+    let query = encodeURIComponent("SELECT Id,Name,SBQQ__Code__c FROM SBQQ__CustomScript__c");
+    const apiUrl = `${instanceUrl}/services/data/v60.0/query/?q=${query}`;
+    try {
+        const response = await fetch(apiUrl, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${sessionId}`,
+                "Content-Type": "application/json"
+            }
+        });
+        if (!response.ok) {
+            dataNotFoundOrWrongFieldAPI(response.text());
+            throw new Error(await response.text());
+        }
+        data = await response.json();
+        if (data.records.length > 0) {
+            console.log("QCP Name:", data.records[0].Name);
+            filterQCPAndLoadUI(data.records,fieldAPI);
+        }
+    } catch (error) {
+        console.error("Error fetching QCP:", error);
+    }
+
 }
