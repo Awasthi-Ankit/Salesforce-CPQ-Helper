@@ -36,64 +36,80 @@ findInCPQActionUse.addEventListener('click', function () {
     }else{
         console.error('Please add a field API to search with');
     }
-    if(searchInQCP){
+    if(searchInQCP && fieldAPI){
         searchInQCPFile();
+    }else{
+        hideQCPSection();
     }
+    
 });
+
+/**
+ * @description Utility function to construct Salesforce API URLs
+ * @param {string} endpoint - The API endpoint (e.g., '/services/data/v60.0/query/')
+ * @param {string} query - The SOQL query string
+ * @returns {string} - The full API URL
+ */
+function constructSalesforceApiUrl(endpoint, query) {
+    return `${instanceUrl}${endpoint}?q=${encodeURIComponent(query)}`;
+}
+
+/**
+ * @description Utility function to perform a fetch call with Salesforce API
+ * @param {string} apiUrl - The full API URL
+ * @returns {Promise<object>} - The JSON response from the API
+ * @throws {Error} - Throws an error if the fetch call fails
+ */
+async function fetchSalesforceData(apiUrl) {
+    try {
+        const response = await fetch(apiUrl, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${sessionId}`,
+                "Content-Type": "application/json"
+            }
+        });
+        if (!response.ok) {
+            throw new Error(await response.text());
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching Salesforce data:", error);
+        throw error;
+    }
+}
 
 /**
  * @description Asynchronus function that fetch possible price actions from connected Saesforce
  * @async Waits for the data response from the SOQL Query sent to Salesforce
  */
 async function findInCPQActions(includeInActive) {
-    let query = encodeURIComponent("SELECT Id,Name,SBQQ__Rule__r.Name,SBQQ__Rule__r.SBQQ__Active__c from SBQQ__PriceAction__c WHERE SBQQ__Field__c =" + "'" +fieldAPI+"'");
-    if(!includeInActive){
-        query += " AND SBQQ__Rule__r.SBQQ__Active__c = true"
+    let query = `SELECT Id,Name,SBQQ__Rule__r.Name,SBQQ__Rule__r.SBQQ__Active__c FROM SBQQ__PriceAction__c WHERE SBQQ__Field__c = '${fieldAPI}'`;
+    console.log(query);
+    if (!includeInActive) {
+        query += " AND SBQQ__Rule__r.SBQQ__Active__c = true";
     }
-    const apiUrl = `${instanceUrl}/services/data/v60.0/query/?q=${query}`;
+    const apiUrl = constructSalesforceApiUrl('/services/data/v60.0/query/', query);
     try {
-        const response = await fetch(apiUrl, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${sessionId}`,
-                "Content-Type": "application/json"
-            }
-        });
-        if (!response.ok) {
-            dataNotFoundOrWrongFieldAPI(response.text());
-            throw new Error(await response.text());
-        }
-        data = await response.json();
+        data = await fetchSalesforceData(apiUrl);
+        console.log(data.records);
         if (data.records.length > 0) {
-            console.log("Price Action Name:", data.records[0].Name);
             addCollectedDataToUI(data.records);
         } else {
             let m = 'No Price Actions Found On This Field';
             dataNotFoundOrWrongFieldAPI(m);
         }
     } catch (error) {
-        console.error("Error fetching price actions:", error);
+        dataNotFoundOrWrongFieldAPI(error.message);
     }
 }
 
 async function searchInQCPFile(){
-    let query = encodeURIComponent("SELECT Id,Name,SBQQ__Code__c FROM SBQQ__CustomScript__c");
-    const apiUrl = `${instanceUrl}/services/data/v60.0/query/?q=${query}`;
+    let query = "SELECT Id,Name,SBQQ__Code__c FROM SBQQ__CustomScript__c";
+    const apiUrl = constructSalesforceApiUrl('/services/data/v60.0/query/', query);
     try {
-        const response = await fetch(apiUrl, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${sessionId}`,
-                "Content-Type": "application/json"
-            }
-        });
-        if (!response.ok) {
-            dataNotFoundOrWrongFieldAPI(response.text());
-            throw new Error(await response.text());
-        }
-        data = await response.json();
+        data = await fetchSalesforceData(apiUrl);
         if (data.records.length > 0) {
-            console.log("QCP Name:", data.records[0].Name);
             filterQCPAndLoadUI(data.records,fieldAPI);
         }
     } catch (error) {
