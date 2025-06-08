@@ -9,8 +9,11 @@ function addCollectedDataToUI(records) {
     const priceActionTableBody = document.getElementById("price_action_table_body"); // Table body to append rows
 
     records.forEach(e => {
+        let recordLink = generateRecordLink(e);
         let newTr = document.createElement("tr"); // Create a new table row
-        newTr.innerHTML = `<td>${e.SBQQ__Rule__r.Name}</td><td>${e.Name}</td><td>${e.SBQQ__Rule__r.SBQQ__Active__c}</td>`;
+        newTr.innerHTML = `<td>${e.SBQQ__Rule__r.Name}</td>
+                           <td><a href="${recordLink}" target="_blank">${e.Name}</a></td>
+                           <td>${e.SBQQ__Rule__r.SBQQ__Active__c}</td>`;
         priceActionTableBody.appendChild(newTr); // Append the row to the table body
     });
 
@@ -59,9 +62,11 @@ function filterQCPAndLoadUI(records, fieldAPI) {
         const qcpList = document.getElementById("qcp_list"); // Element to display the list of matching records
         qcpList.innerHTML = ""; // Clear old inner HTML
         toDisplyOnUI.forEach((item, index) => {
+            let recordLink = generateRecordLink(item);
             const separator = index < toDisplyOnUI.length - 1 ? ", " : "";
             const span = document.createElement("span");
             span.innerText = item.Name + separator;
+            span.innerHTML = `<a href="${recordLink}" target="_blank">${item.Name}</a>` + separator;
             qcpList.appendChild(span);
         });
         const qcpDataFound = document.getElementById("qcp_data_found");
@@ -84,4 +89,10 @@ function hideQCPDataNotFound(){
 function hideQCPDataFound(){
     const qcpDataFound = document.getElementById("qcp_data_found");
     qcpDataFound.classList.add("hidden");
+}
+
+// Generate a link for the record
+function generateRecordLink(e) {
+    let recordLink = `${instanceUrl}/${e.attributes.url.substring(e.attributes.url.lastIndexOf("/") + 1)}`; // Create a new anchor element
+    return recordLink;
 }

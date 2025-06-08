@@ -84,15 +84,13 @@ async function fetchSalesforceData(apiUrl) {
  * @async Waits for the data response from the SOQL Query sent to Salesforce
  */
 async function findInCPQActions(includeInActive) {
-    let query = `SELECT Id,Name,SBQQ__Rule__r.Name,SBQQ__Rule__r.SBQQ__Active__c FROM SBQQ__PriceAction__c WHERE SBQQ__Field__c = '${fieldAPI}'`;
-    console.log(query);
+    let query = `SELECT Id,Name,SBQQ__Rule__c,SBQQ__Rule__r.Name,SBQQ__Rule__r.SBQQ__Active__c FROM SBQQ__PriceAction__c WHERE SBQQ__Field__c = '${fieldAPI}'`;
     if (!includeInActive) {
         query += " AND SBQQ__Rule__r.SBQQ__Active__c = true";
     }
     const apiUrl = constructSalesforceApiUrl('/services/data/v60.0/query/', query);
     try {
         data = await fetchSalesforceData(apiUrl);
-        console.log(data.records);
         if (data.records.length > 0) {
             addCollectedDataToUI(data.records);
         } else {

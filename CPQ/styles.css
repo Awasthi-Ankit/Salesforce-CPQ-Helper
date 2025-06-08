@@ -75,6 +75,9 @@ table{
     right: 0;
     left: 0;
 }
+.footer_only a {
+    color: var(--white);
+}
 /* Footer Section End*/
 
 .simple_flex{
