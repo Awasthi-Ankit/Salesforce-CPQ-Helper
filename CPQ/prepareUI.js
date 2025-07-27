@@ -4,12 +4,12 @@
  * @param {Array} records - Array of record objects fetched from Salesforce.
  *                          Each record is expected to have the following structure:
  */
-function addCollectedDataToUI(records) {
+function addCollectedDataToUI(records, instanceUrl) {
     const collectedDataRoot = document.getElementById("collected_data_table_root"); // Root element for the table
     const priceActionTableBody = document.getElementById("price_action_table_body"); // Table body to append rows
 
     records.forEach(e => {
-        let recordLink = generateRecordLink(e);
+        let recordLink = generateRecordLink(e,instanceUrl);
         let newTr = document.createElement("tr"); // Create a new table row
         newTr.innerHTML = `<td>${e.SBQQ__Rule__r.Name}</td>
                            <td><a href="${recordLink}" target="_blank">${e.Name}</a></td>
@@ -49,7 +49,7 @@ function clearUI(displayIfStoredHTML) {
  *                          Each record is expected to have the following structure:
  * @param {string} fieldAPI - The field API value to filter records by.
  */
-function filterQCPAndLoadUI(records, fieldAPI) {
+function filterQCPAndLoadUI(records, fieldAPI, instanceUrl) {
     let toDisplyOnUI = []; // Array to store matching records
 
     records.forEach((r) => {
@@ -62,7 +62,7 @@ function filterQCPAndLoadUI(records, fieldAPI) {
         const qcpList = document.getElementById("qcp_list"); // Element to display the list of matching records
         qcpList.innerHTML = ""; // Clear old inner HTML
         toDisplyOnUI.forEach((item, index) => {
-            let recordLink = generateRecordLink(item);
+            let recordLink = generateRecordLink(item,instanceUrl);
             const separator = index < toDisplyOnUI.length - 1 ? ", " : "";
             const span = document.createElement("span");
             span.innerText = item.Name + separator;
@@ -92,7 +92,7 @@ function hideQCPDataFound(){
 }
 
 // Generate a link for the record
-function generateRecordLink(e) {
+function generateRecordLink(e,instanceUrl) {
     let recordLink = `${instanceUrl}/${e.attributes.url.substring(e.attributes.url.lastIndexOf("/") + 1)}`; // Create a new anchor element
     return recordLink;
 }
