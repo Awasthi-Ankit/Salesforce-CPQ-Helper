@@ -82,13 +82,13 @@ button:hover, input[type="submit"]:hover, input[type="button"]:hover {
 .header_only {
     font-size: large;
     padding: 1rem;
-    text-align: right;
+    text-align: left;
 }
 
 .logo {
     position: absolute;
     top: 50;
-    left: 0;
+    right: 0;
     bottom: 50;
 }
 /* Header Section End*/
