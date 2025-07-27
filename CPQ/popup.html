@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Salesforce CPQ Helper</title>
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    <header class="header_footer header_only">
-        <img src="./img/CPQ Helper.svg" alt="Your Logo" width="60" height="30" class="logo">
+    <header class="header_footer header_only" role="banner" aria-label="Application Header">
+        <img src="./img/CPQ Helper.svg" alt="Salesforce CPQ Helper" width="60" height="30" class="logo">
         <p>Salesforce CPQ Helper</p>
     </header>
-    <main class="main_container">
+    <main class="main_container" role="main" aria-label="Main Content">
         <!-- Find a field in CPQ Partials -->
-        <div class="major_actions simple_flex">
+        <div class="major_actions simple_flex" role="region" aria-label="Field Search Section">
             <div class="simple_flex_col">
                 <!-- Enter field api name to search -->
                  <div class="padding_m">
@@ -21,7 +21,7 @@
                      <button name = "find_in_CPQ_action_use" id="find_in_CPQ_action_use" class="major_button" aria-label="Find Actions">Find Actions</button>
                  </div>
                 <div class="simple_flex padding_m">
-                    <!-- To inclued InActive Price rules and actions -->
+                    <!-- To include inactive Price rules and actions -->
                     <div class="checkbox-container">
                         <input type="checkbox" id="include_inactive">
                         <label for="include_inactive">Include Inactive</label>
@@ -35,10 +35,10 @@
             <!-- Action button to hit a search -->
         </div>
         <!-- collected data and errors -->
-         <div id="display_data_root">
+         <div id="display_data_root" role="region" aria-label="Results Display">
              <div class="collected_data_table_root hidden" id="collected_data_table_root">
                  <div>
-                     <h1>This field is getting updaetd from following price actions:</h1>
+                     <h1>This field is getting updated from following price actions:</h1>
                  </div>
                  <div class="price_action_table_container padding_m_right">
                      <table id="price_action_table" role="table">
@@ -67,9 +67,8 @@
          </div>
         <!-- collected data and errors end-->
     </main>
-    <footer class="header_footer footer_only simple_flex">  
+    <footer class="header_footer footer_only simple_flex" role="contentinfo" aria-label="Application Footer">  
         <p><a href="https://github.com/Awasthi-Ankit/Salesforce-CPQ-Helper.git" target="_blank">GitHub</a></p>
-        <p></p>
     </footer>
     <script src="prepareUI.js"></script>
     <script src="popup.js"></script>
