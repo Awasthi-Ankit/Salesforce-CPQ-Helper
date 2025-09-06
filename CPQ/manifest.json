@@ -1,10 +1,13 @@
 {
     "manifest_version": 3,
-    "name": "CPQ",
+    "name": "Salesforce CPQ Helper",
     "version": "1.0",
-    "description": "CPQ Helper",
+    "description": "For Salesforce CPQ.This tool helps finding out the fields references in any Price rule, Price actiona and Custom script.",
     "permissions": ["scripting","tabs","cookies"],
-    "host_permissions": ["<all_urls>"],
+    "host_permissions": [
+      "*://*.salesforce.com/*",
+      "*://*.lightning.force.com/*"
+    ],
     "background": {
       "service_worker": "background.js"
     },
