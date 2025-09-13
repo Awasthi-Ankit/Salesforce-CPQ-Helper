@@ -3,7 +3,7 @@
     "name": "Salesforce CPQ Helper",
     "version": "1.0",
     "description": "For Salesforce CPQ.This tool helps finding out the fields references in any Price rule, Price actiona and Custom script.",
-    "permissions": ["scripting","tabs","cookies"],
+    "permissions": ["tabs","cookies"],
     "host_permissions": [
       "*://*.salesforce.com/*",
       "*://*.lightning.force.com/*"
