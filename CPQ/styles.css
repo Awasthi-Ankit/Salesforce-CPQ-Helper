@@ -3,7 +3,6 @@
     padding: 0;
     box-sizing: border-box;
     font-size: 10x;
-    overflow: hidden;
 }
 
 :root {
@@ -28,8 +27,6 @@ h1 {
 }
 
 table, th, td {
-    border: 1px solid var(--black);
-    border-collapse: collapse;
     text-align: left;
     font-size: 0.8rem;
 }
@@ -39,7 +36,6 @@ th,td {
 }
 
 table {
-    margin-top: 0.5rem;
     width: 100%;
 }
 button {
@@ -99,6 +95,7 @@ button:hover, input[type="submit"]:hover, input[type="button"]:hover {
     bottom: 0;
     right: 0;
     left: 0;
+    z-index: -1;
 }
 
 .footer_only a {
@@ -143,15 +140,29 @@ button:hover, input[type="submit"]:hover, input[type="button"]:hover {
 .margin_m_top {
     margin-top: 1rem;
 }
+
 /* Collected Data section */
 .collected_data_table_root {
-    margin-top: 1rem;
     max-height: 36vh;
-    overflow: auto;
 }
+
 .price_action_table_container {
     width: 100%;
+    overflow-y: auto;
+    max-height: 30vh;
 }
+
+.price_action_table_head {
+    position: sticky;
+    top: 0;
+    background-color: var(--white);
+    z-index: 1;
+}
+#price_action_table{
+    border-spacing: 0;
+    border-collapse: separate;
+}
+
 /* Error section */
 .collected_data_error_root {
     margin-top: 0.5rem;
