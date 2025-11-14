@@ -66,7 +66,7 @@ function filterQCPAndLoadUI(records, fieldAPI, instanceUrl) {
             const separator = index < toDisplyOnUI.length - 1 ? ", " : "";
             const span = document.createElement("span");
             span.innerText = item.Name + separator;
-            span.innerHTML = `<a href="${recordLink}" target="_blank">${item.Name}</a>` + separator;
+            span.innerHTML = `<a href="${recordLink}" target="_blank">${item.Name}</a> (${item.SBQQ__Code__c.length} Chars)` + separator;
             qcpList.appendChild(span);
         });
         const qcpDataFound = document.getElementById("qcp_data_found");

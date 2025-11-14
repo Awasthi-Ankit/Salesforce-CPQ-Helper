@@ -14,7 +14,6 @@
 html {
     font-family: sans-serif;
     width: 500px;
-    height: 400px !important;
 }
 
 label {
@@ -38,10 +37,18 @@ th,td {
 table {
     width: 100%;
 }
-button {
+.main_button {
     padding: 0.4rem;
     border: 0.07rem solid var(--salesforce-blue);
     border-radius: 0.2rem;
+    color: var(--salesforce-blue);
+    background-color: var(--white);
+    cursor: pointer;
+}
+.small_button {
+    border: 0.07rem solid var(--salesforce-blue);
+    border-radius: 0.2rem;
+    padding: 0.2rem;
     color: var(--salesforce-blue);
     background-color: var(--white);
     cursor: pointer;
@@ -51,7 +58,7 @@ input[type = "Text"]:focus, textarea:focus, select:focus {
     outline: 0.1rem inset var(--salesforce-blue);
 }   
 
-button:hover, input[type="submit"]:hover, input[type="button"]:hover {
+.main_button:hover, input[type="submit"]:hover, input[type="button"]:hover {
     background-color: var(--salesforce-blue);
     color: var(--white);
 }
@@ -60,6 +67,10 @@ button:hover, input[type="submit"]:hover, input[type="button"]:hover {
 }
 
 .padding_m_right {
+    padding: 0.5rem;
+}
+
+.padding_m_left {
     padding: 0.5rem;
 }
 
@@ -91,11 +102,7 @@ button:hover, input[type="submit"]:hover, input[type="button"]:hover {
 
 /* Footer Section */
 .footer_only {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    z-index: -1;
+    margin-top: 4vh;
 }
 
 .footer_only a {
@@ -169,3 +176,8 @@ button:hover, input[type="submit"]:hover, input[type="button"]:hover {
 }
 
 /* Main Section */
+#custom_script_id_input {
+    padding: 0.2rem;
+    border: 0.07rem solid var(--salesforce-blue);
+    border-radius: 0.2rem;
+}

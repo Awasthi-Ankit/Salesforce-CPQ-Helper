@@ -5,6 +5,7 @@
     let fieldAPI = '';
     const findInCPQActionUse = document.getElementById('find_in_CPQ_action_use');
     const storeInitialDisplayDataRootHTML = document.getElementById("display_data_root").innerHTML; // store inner html to go back to initial state when needed to reset the UI.
+    const findQCPLength = document.getElementById('find_QCP_length');
     
     /**
      * @description Get all the data required from chrom tab and cookies
@@ -14,6 +15,7 @@
         let url = new URL(tabs[0].url);
         let domain = url.hostname.includes(".force.com") ? url.hostname.replace(".lightning.force.com", ".my.salesforce.com") : url.hostname;
         instanceUrl = `https://${domain}`;
+        instanceUrl.replace('-setup','');
         chrome.cookies.get({ url: `https://${domain}`, name: 'sid' }, function (cookie) {
             if (cookie) {
                 sessionId = cookie.value;
@@ -38,6 +40,30 @@
             hideQCPSection();
         }
         
+    });
+
+    /**
+     * @description Listen to the user button click for finding QCP character length
+     */
+    findQCPLength.addEventListener('click', async function () {
+        let QCPId = document.getElementById("custom_script_id_input").value.trim();
+        let QCPLimitText = document.getElementById("char_limit_QCP");
+        if(!QCPId){
+            QCPLimitText.innerText = "Please enter a valid Custom Script Id";
+            return;
+        }
+        const query = `SELECT SBQQ__Code__c FROM SBQQ__CustomScript__c WHERE Id = '${QCPId}'`;
+        const apiUrl = constructSalesforceApiUrl('/services/data/v60.0/query/', query);
+        try {
+            data = await fetchSalesforceData(apiUrl);
+            if (data.records.length > 0) {
+                console.log("QCP Records fetched:", data.records);
+                char_limit_QCP = data.records[0].SBQQ__Code__c.length;
+                QCPLimitText.innerText = "Char: " + char_limit_QCP;
+            }
+        } catch (error) {
+            console.error("Error fetching QCP:", error);
+        }
     });
     
     /**
@@ -84,6 +110,7 @@
         if (!includeInActive) {
             query += " AND SBQQ__Rule__r.SBQQ__Active__c = true";
         }
+        query += " ORDER BY SBQQ__Rule__r.Name ASC";
         const apiUrl = constructSalesforceApiUrl('/services/data/v60.0/query/', query);
         try {
             data = await fetchSalesforceData(apiUrl);
@@ -92,7 +119,7 @@
             } else {
                 let m = fieldAPI === ""
                     ? 'Field API is empty. Please enter a value.'
-                    :'No Price Actions Found On the Field APPI: ' + fieldAPI
+                    :'No Price Actions Found On the Field API: ' + fieldAPI
                 dataNotFoundOrWrongFieldAPI(m);
             }
         } catch (error) {
@@ -106,6 +133,7 @@
         try {
             data = await fetchSalesforceData(apiUrl);
             if (data.records.length > 0) {
+                console.log("QCP Records fetched:", data.records);
                 filterQCPAndLoadUI(data.records,fieldAPI, instanceUrl);
             }
         } catch (error) {

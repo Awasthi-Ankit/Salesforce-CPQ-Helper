@@ -6,7 +6,8 @@
     "permissions": ["tabs","cookies"],
     "host_permissions": [
       "*://*.salesforce.com/*",
-      "*://*.lightning.force.com/*"
+      "*://*.lightning.force.com/*",
+      "*://*.my.salesforce-setup.com/*"
     ],
     "background": {
       "service_worker": "background.js"
