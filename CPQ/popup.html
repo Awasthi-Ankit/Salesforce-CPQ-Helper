@@ -15,10 +15,15 @@
         <!-- Find a field in CPQ Partials -->
         <div class="major_actions simple_flex" role="region" aria-label="Field Search Section">
             <div class="simple_flex_col">
+                <div class="QCP_Info_section padding_m_left">
+                    <input type="text" name="custom_script_id_input" placeholder="Custom Script Id" id="custom_script_id_input" class="" aria-label="Enter custom script name">
+                    <button name = "find_QCP_length" id="find_QCP_length" class="small_button" aria-label="Find Char Count">Count Char</button>
+                    <span id="char_limit_QCP"></span>
+                </div>
                 <!-- Enter field api name to search -->
-                 <div class="padding_m">
+                 <div class="padding_m_left">
                      <input type="text" name="find_a_field_input" placeholder="Field API Name" id="find_a_field_input_id" class="major_action_input" aria-label="Enter field API name">
-                     <button name = "find_in_CPQ_action_use" id="find_in_CPQ_action_use" class="major_button" aria-label="Find Actions">Find Actions</button>
+                     <button name = "find_in_CPQ_action_use" id="find_in_CPQ_action_use" class="major_button main_button" aria-label="Find Actions">Find Actions</button>
                  </div>
                 <div class="simple_flex padding_m">
                     <!-- To include inactive Price rules and actions -->
@@ -59,7 +64,7 @@
              </div>
          </div>
          <div class="hidden margin_m_top" id="qcp_data_found">
-            <h1>This field is being referenced in following QCP Files</h1>
+            <h1 class="padding_m">This field is being referenced in following QCP Files</h1>
             <p id="qcp_list"></p>
          </div>
          <div class="hidden margin_m_top" id="qcp_data_notfound">
